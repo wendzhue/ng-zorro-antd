@@ -289,15 +289,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       const length = this.carouselContents.length;
       const from = this.activeIndex;
       const to = (index + length) % length;
+
       this.isTransiting = true;
       this.nzBeforeChange.emit({ from, to });
+
       this.strategy!.switch(this.activeIndex, index).subscribe(() => {
         this.scheduleNextTransition();
         this.nzAfterChange.emit(index);
         this.isTransiting = false;
+        this.cdr.detectChanges();
       });
+
       this.markContentActive(to);
-      this.cdr.markForCheck();
     }
   }
 
